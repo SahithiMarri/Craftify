@@ -33,7 +33,7 @@ const AIChat = () => {
 
     try {
       const response = await axios.post(
-        'https://generativelanguage.googleapis.com/v1beta2/models/',
+        'https://generativelanguage.googleapis.com/v1beta2/models/chat-bison-001:generateMessage',
         {
           prompt: {
             text: inputValue
@@ -43,18 +43,19 @@ const AIChat = () => {
         },
         {
           headers: {
-            'Authorization': `Bearer ${GEMINI_API_KEY}`,
+            Authorization: `Bearer ${GEMINI_API_KEY}`,
             'Content-Type': 'application/json'
           }
         }
       );
 
+      const aiOutput = response.data.candidates[0]?.output;
+
       const botMessage = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
         message:
-          response.data.candidates[0]?.output ||
-          "I'm sorry, I couldn't fetch a response right now."
+          aiOutput || "I'm sorry, I couldn't fetch a response right now."
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -142,9 +143,7 @@ const AIChat = () => {
                   key={message.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${
-                    message.type === 'user' ? 'justify-end' : 'justify-start'
-                  }`}
+                  className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
                     className={`max-w-[80%] p-3 rounded-2xl ${
