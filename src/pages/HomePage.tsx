@@ -140,31 +140,7 @@ const HomePage = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 bg-white/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Shop by Category
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {['Jewelry', 'Paintings', 'Home Décor', 'Crafts'].map((category, index) => (
-              <motion.div
-                key={category}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-gradient-to-br from-orange-100 to-rose-100 rounded-2xl p-6 text-center hover:shadow-lg transition-shadow cursor-pointer group"
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-rose-500 rounded-full mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span className="text-white text-2xl font-bold">
-                    {category[0]}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-gray-800">{category}</h3>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
     </div>
   );
 };
