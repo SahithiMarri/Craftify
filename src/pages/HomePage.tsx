@@ -12,22 +12,31 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-orange-400 via-rose-400 to-pink-500 py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-32 overflow-hidden">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center z-0"
+          style={{ backgroundImage: "url('https://t3.ftcdn.net/jpg/00/60/66/98/360_F_60669802_h0rwfSXLjqqgsSw4zUVRafdv9tWhTfl1.jpg')" }}
+        ></div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-rose-400 to-pink-500 opacity-80 z-10"></div>
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold text-white mb-6"
+            className="text-5xl md:text-7xl font-extrabold font-serif text-white mb-8"
           >
             Discover Handmade
-            <span className="block">Treasures</span>
+            <span className="block text-yellow-300">Treasures</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-white/90 mb-8 max-w-2xl mx-auto"
+            className="text-2xl text-white/90 mb-10 max-w-2xl mx-auto"
           >
             Support local artisans and find unique, sustainable products crafted with love
           </motion.p>
@@ -35,7 +44,7 @@ const HomePage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="flex items-center space-x-2 bg-white rounded-full px-6 py-3 max-w-md mx-auto shadow-lg"
+            className="flex items-center space-x-2 bg-white rounded-full px-8 py-4 max-w-md mx-auto shadow-lg"
           >
             <Search className="w-5 h-5 text-gray-400" />
             <input
@@ -49,10 +58,13 @@ const HomePage = () => {
             </button>
           </motion.div>
         </div>
-        
-        {/* Floating elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-white/20 rounded-full animate-bounce"></div>
-        <div className="absolute bottom-20 right-10 w-16 h-16 bg-white/20 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
+
+        {/* Floating Elements */}
+        <div className="absolute top-28 left-10 w-24 h-24 bg-white/20 rounded-full animate-bounce"></div>
+        <div
+          className="absolute bottom-28 right-10 w-20 h-20 bg-white/20 rounded-full animate-bounce"
+          style={{ animationDelay: '1s' }}
+        ></div>
       </section>
 
       {/* Featured Products */}
@@ -86,8 +98,8 @@ const HomePage = () => {
 
           <div className="flex gap-8">
             {/* Filters Sidebar */}
-            <FilterSidebar 
-              showMobile={showFilters} 
+            <FilterSidebar
+              showMobile={showFilters}
               onClose={() => setShowFilters(false)}
               onFiltersChange={setFilters}
             />
