@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ShoppingCart, Heart, Star } from 'lucide-react';
-import { Product } from '../types';
-import { useCart } from '../contexts/CartContext';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ShoppingCart, Heart, Star } from "lucide-react";
+import { Product } from "../types";
+import { useCart } from "../contexts/CartContext";
 
 interface ProductCardProps {
   product: Product;
@@ -11,10 +11,16 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
+  const [liked, setLiked] = useState(false); // 👈 track like state
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addToCart(product);
+  };
+
+  const toggleLike = (e: React.MouseEvent) => {
+    e.preventDefault(); // prevent triggering <Link>
+    setLiked(!liked);
   };
 
   return (
@@ -35,12 +41,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 Eco-Friendly
               </span>
             )}
-            <button className="bg-white/80 p-2 rounded-full hover:bg-white transition-colors">
-              <Heart className="w-4 h-4 text-gray-600" />
+            <button
+              onClick={toggleLike}
+              className="bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+            >
+              <Heart
+                className="w-4 h-4 transition-colors"
+                style={{
+                  color: liked ? "rgb(255, 0, 0)" : "rgb(75, 85, 99)", // red when liked, gray when not
+                  fill: liked ? "rgb(255, 0, 0)" : "none", // fill red only if liked
+                }}
+              />
             </button>
           </div>
         </div>
-        
+
         <div className="p-4">
           <div className="flex items-center mb-2">
             <div className="flex items-center space-x-1">
@@ -49,8 +64,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   key={i}
                   className={`w-4 h-4 ${
                     i < product.rating
-                      ? 'text-yellow-400 fill-current'
-                      : 'text-gray-300'
+                      ? "text-yellow-400 fill-current"
+                      : "text-gray-300"
                   }`}
                 />
               ))}
@@ -59,15 +74,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               ({product.reviews} reviews)
             </span>
           </div>
-          
+
           <h3 className="font-semibold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">
             {product.title}
           </h3>
-          
+
           <p className="text-sm text-gray-600 mb-3 line-clamp-2">
             {product.description}
           </p>
-          
+
           <div className="flex items-center justify-between mb-3">
             <div>
               <span className="text-2xl font-bold text-gray-800">
@@ -83,7 +98,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               by {product.seller}
             </span>
           </div>
-          
+
           <button
             onClick={handleAddToCart}
             className="w-full bg-gradient-to-r from-orange-500 to-rose-500 text-white py-2 px-4 rounded-lg hover:from-orange-600 hover:to-rose-600 transition-all duration-300 flex items-center justify-center space-x-2 group/button"
