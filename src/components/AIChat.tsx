@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import axios from 'axios';
 
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
 const AIChat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -31,21 +33,34 @@ const AIChat = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/chat',  // ← Your proxy backend URL
-        { prompt: inputValue }
+        'https://generativelanguage.googleapis.com/v1beta2/models/chat-bison-001:generateMessage',
+        {
+          prompt: {
+            text: inputValue
+          },
+          temperature: 0.7,
+          candidateCount: 1
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${GEMINI_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        }
       );
+
+      const aiOutput = response.data.candidates[0]?.output;
 
       const botMessage = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
         message:
-          response.data.output ||
-          "I'm sorry, I couldn't fetch a response right now."
+          aiOutput || "I'm sorry, I couldn't fetch a response right now."
       };
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
-      console.error('Chat API error:', error);
+      console.error('Gemini API error:', error);
 
       const errorMessage = {
         id: (Date.now() + 2).toString(),
@@ -110,6 +125,7 @@ const AIChat = () => {
             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
             className="fixed bottom-24 right-6 w-80 h-96 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col z-50 overflow-hidden"
           >
+            {/* Header */}
             <div className="bg-gradient-to-r from-orange-500 to-rose-500 text-white p-4 flex items-center space-x-3">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                 <Bot className="w-5 h-5" />
@@ -120,6 +136,7 @@ const AIChat = () => {
               </div>
             </div>
 
+            {/* Messages */}
             <div className="flex-1 p-4 overflow-y-auto space-y-3">
               {messages.map(message => (
                 <motion.div
@@ -128,11 +145,13 @@ const AIChat = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[80%] p-3 rounded-2xl ${
-                    message.type === 'user'
-                      ? 'bg-gradient-to-r from-orange-500 to-rose-500 text-white'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}>
+                  <div
+                    className={`max-w-[80%] p-3 rounded-2xl ${
+                      message.type === 'user'
+                        ? 'bg-gradient-to-r from-orange-500 to-rose-500 text-white'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
                     <p className="text-sm">{message.message}</p>
                   </div>
                 </motion.div>
@@ -152,6 +171,7 @@ const AIChat = () => {
               )}
             </div>
 
+            {/* Input */}
             <div className="p-4 border-t border-gray-200">
               <div className="flex space-x-2">
                 <input

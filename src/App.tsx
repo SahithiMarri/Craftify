@@ -24,7 +24,7 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
             </Routes>
-            <AIChat />
+            <AIChat /> {/* Your AI-powered chatbot is available on all pages */}
           </div>
         </Router>
       </CartProvider>
